@@ -1,15 +1,18 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Header from "./components/Header";
-import BudgetCard from "./components/BudgetCard";
 import { BudgetsProvider } from "./contexts/BudgetContexts";
-import AddBudgetModal from "./components/AddBudgetModal";
+import Main from "./components/Main";
+
 export default function Home() {
+  const [open, setOpen] = useState(false);
+  const handleOpenClose = () => setOpen(!open);
+
   return (
     <BudgetsProvider>
-      <main className="flex min-h-screen flex-col items-center bg-slate-400 dark:bg-slate-600 ">
-        <AddBudgetModal></AddBudgetModal>
-        <Header />
-        <BudgetCard name="Rent" amount={1000} max={1000} />
+      <main className="flex min-h-screen flex-col items-center bg-slate-400 dark:bg-slate-600">
+        <Header onClickButton={handleOpenClose} />
+        <Main open={open} handleOpenClose={handleOpenClose} />
       </main>
     </BudgetsProvider>
   );

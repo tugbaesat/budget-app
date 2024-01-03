@@ -1,9 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import { useBudgets } from "../contexts/BudgetContexts";
 
 const style = {
   position: "absolute",
@@ -17,25 +18,26 @@ const style = {
   p: 4,
 };
 
-export default function AddBudgetModal() {
-  const [open, setOpen] = useState(false);
-  const [inputs, setInputs] = useState({});
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+export default function AddBudgetModal({open, handleOpenClose}) {
+  const nameRef = useRef();
+  const maxRef = useRef();
+  const {addBudget} = useBudgets()
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     addBudget({
-      name: event.target.name,
-      max: event.target.value,
+      name: nameRef.current.value,
+      max: parseFloat(maxRef.current.value),
     });
+    handleOpenClose()
   };
 
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
+    
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={handleOpenClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -48,7 +50,7 @@ export default function AddBudgetModal() {
           >
             Add New Budget
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+        
             <form
               className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
               onSubmit={handleSubmit}
@@ -65,6 +67,7 @@ export default function AddBudgetModal() {
                   id="name"
                   type="text"
                   required
+                  ref={nameRef}
                 />
               </div>
               <div className="mb-6">
@@ -81,6 +84,7 @@ export default function AddBudgetModal() {
                   required
                   min={0}
                   step={0.01}
+                  ref={maxRef}
                 />
               </div>
               <div className="flex items-center justify-end">
@@ -92,10 +96,9 @@ export default function AddBudgetModal() {
                 </button>
               </div>
             </form>
-          </Typography>
+       
         </Box>
       </Modal>
     </div>
   );
 }
-

@@ -16,10 +16,10 @@ export const BudgetsProvider = ({ children }) => {
     return expenses.filter((expense) => expense.budgetId === budgetId);
   }
   function addBudget({ name, max }) {
-    if (prevBudgets.find((budget) => budget.name === name)) {
-      return prevBudgets;
-    }
     setBudgets((prevBudgets) => {
+      if (prevBudgets.find((budget) => budget.name === name)) {
+        return prevBudgets;
+      }
       return [...prevBudgets, { id: uuidV4(), name, max }];
     });
   }

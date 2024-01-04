@@ -4,7 +4,10 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { useBudgets } from "../contexts/BudgetContexts";
+import {
+  useBudgets,
+  UNCATEGORIZED_BUDGET_ID,
+} from "../contexts/BudgetContexts";
 
 const style = {
   position: "absolute",
@@ -18,16 +21,22 @@ const style = {
   p: 4,
 };
 
-export default function AddBudgetModal({ open, handleOpenClose }) {
-  const nameRef = useRef();
-  const maxRef = useRef();
-  const { addBudget } = useBudgets();
+export default function AddExpenseModal({
+  open,
+  handleOpenClose,
+  defaultBudgetId,
+}) {
+  const descriptionRef = useRef();
+  const amountRef = useRef();
+  const budgetIdRef = useRef();
+  const { addExpense, budgets } = useBudgets();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addBudget({
-      name: nameRef.current.value,
-      max: parseFloat(maxRef.current.value),
+    addExpense({
+      description: descriptionRef.current.value,
+      amount: parseFloat(amountRef.current.value),
+      budgetId: budgetIdRef.current.value,
     });
     handleOpenClose();
   };
@@ -47,7 +56,7 @@ export default function AddBudgetModal({ open, handleOpenClose }) {
             component="h2"
             className="text-black"
           >
-            Add New Budget
+            Add New Expense
           </Typography>
 
           <form
@@ -59,22 +68,22 @@ export default function AddBudgetModal({ open, handleOpenClose }) {
                 className="block text-gray-700 text-sm font-bold mb-2"
                 for="name"
               >
-                Name
+                Description
               </label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="name"
                 type="text"
                 required
-                ref={nameRef}
+                ref={descriptionRef}
               />
             </div>
-            <div className="mb-6">
+            <div className="mb-4">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
                 for="number"
               >
-                Maximum Budget
+                Amount
               </label>
               <input
                 className="shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
@@ -83,15 +92,36 @@ export default function AddBudgetModal({ open, handleOpenClose }) {
                 required
                 min={0}
                 step={0.01}
-                ref={maxRef}
+                ref={amountRef}
               />
+            </div>
+            <div className="mb-6">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                for="select"
+              >
+                Budget
+              </label>
+              <select
+                className="shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                id="select"
+                ref={budgetIdRef}
+                defaultValue={defaultBudgetId}
+              >
+                <option value={UNCATEGORIZED_BUDGET_ID}>Uncategorized</option>
+                {budgets.map((budget) => (
+                  <option key={budget.id} value={budget.id}>
+                    {budget.name}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="flex items-center justify-end">
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 type="submit"
               >
-                Add Budget
+                Add Expense
               </button>
             </div>
           </form>

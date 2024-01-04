@@ -1,14 +1,14 @@
 import React from "react";
 import { currencyFormatter } from "../utils";
 
-const BudgetCard = ({ name, amount, max, handleOpenClose }) => {
+const BudgetCard = ({ name, amount, max, handleOpenClose, hideButtons }) => {
   const bgColor = [];
   if (amount / max > 0.75) {
-    bgColor.push("bg-red-500", "bg-opacity-90");
+    bgColor.push("bg-red-500", "bg-opacity-75");
   } else if (amount / max > 0.5) {
-    bgColor.push("bg-yellow-500", "bg-opacity-90");
+    bgColor.push("bg-yellow-500", "bg-opacity-75");
   } else {
-    bgColor.push("bg-blue-500", "bg-opacity-90");
+    bgColor.push("bg-blue-500", "bg-opacity-75");
   }
   const progressBarColor = [];
   if (amount / max > 0.75) {
@@ -48,18 +48,20 @@ const BudgetCard = ({ name, amount, max, handleOpenClose }) => {
           ></div>
         </div>
       )}
-      <div className="flex gap-2 justify-end">
-        <button
-          className="bg-transparent hover:bg-gray-200 hover:bg-opacity-15 text-gray-200 font-semibold hover:text-white py-2.5 px-5 me-2 mb-2 text-sm border border-gray-200 rounded"
-          onClick={handleOpenClose}
-        >
-          Add Expense
-        </button>
+      {!hideButtons && (
+        <div className="flex gap-2 justify-end">
+          <button
+            className="bg-transparent hover:bg-gray-200 hover:bg-opacity-15 text-gray-200 font-semibold hover:text-white py-2.5 px-5 me-2 mb-2 text-sm border border-gray-200 rounded"
+            onClick={handleOpenClose}
+          >
+            Add Expense
+          </button>
 
-        <button className="bg-transparent hover:bg-gray-200 hover:bg-opacity-15 text-gray-200 font-semibold hover:text-white py-2.5 px-5 me-2 mb-2 text-sm border border-gray-200 rounded">
-          View Expenses
-        </button>
-      </div>
+          <button className="bg-transparent hover:bg-gray-200 hover:bg-opacity-15 text-gray-200 font-semibold hover:text-white py-2.5 px-5 me-2 mb-2 text-sm border border-gray-200 rounded">
+            View Expenses
+          </button>
+        </div>
+      )}
     </div>
   );
 };

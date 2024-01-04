@@ -4,6 +4,7 @@ import BudgetCard from "./BudgetCard";
 import { useBudgets } from "../contexts/BudgetContexts";
 import AddExpenseModal from "./AddExpenseModal";
 import UncategorizedBudgetCard from "./UncategorizedBudgetCard";
+import TotalBudgetCard from "./TotalBudgetCard";
 
 const Main = ({
   openBudget,
@@ -31,7 +32,10 @@ const Main = ({
           />
         );
       })}
-      <UncategorizedBudgetCard/>
+      <UncategorizedBudgetCard
+        handleOpenClose={handleOpenCloseExpense}
+      />
+      <TotalBudgetCard />
       <AddBudgetModal
         open={openBudget}
         handleOpenClose={handleOpenCloseBudget}

@@ -1,17 +1,24 @@
 import React from "react";
 import AddBudgetModal from "./AddBudgetModal";
 import BudgetCard from "./BudgetCard";
-import { useBudgets } from "../contexts/BudgetContexts";
+import {
+  UNCATEGORIZED_BUDGET_ID,
+  useBudgets,
+} from "../contexts/BudgetContexts";
 import AddExpenseModal from "./AddExpenseModal";
 import UncategorizedBudgetCard from "./UncategorizedBudgetCard";
 import TotalBudgetCard from "./TotalBudgetCard";
+import ViewExpensesModal from "./ViewExpensesModal";
 
 const Main = ({
   openBudget,
   openExpense,
+  openView,
   handleOpenCloseBudget,
   handleOpenCloseExpense,
+  handleOpenCloseViewExpenses,
   expenseModalBudgetId,
+  viewExpensesModalbudgetId,
 }) => {
   const { budgets, getBudgetExpenses } = useBudgets();
   return (
@@ -28,12 +35,16 @@ const Main = ({
             name={budget.name}
             amount={amount}
             max={budget.max}
-            handleOpenClose={() => handleOpenCloseExpense(budget.id)}
+            handleAddOpenClose={() => handleOpenCloseExpense(budget.id)}
+            handleViewOpenClose={() => handleOpenCloseViewExpenses(budget.id)}
           />
         );
       })}
       <UncategorizedBudgetCard
-        handleOpenClose={handleOpenCloseExpense}
+        handleAddOpenClose={handleOpenCloseExpense}
+        handleViewOpenClose={() =>
+          handleOpenCloseViewExpenses(UNCATEGORIZED_BUDGET_ID)
+        }
       />
       <TotalBudgetCard />
       <AddBudgetModal
@@ -44,6 +55,11 @@ const Main = ({
         open={openExpense}
         defaultBudgetId={expenseModalBudgetId}
         handleOpenClose={handleOpenCloseExpense}
+      />
+      <ViewExpensesModal
+        open={openView}
+        budgetId={viewExpensesModalbudgetId}
+        handleOpenClose={handleOpenCloseViewExpenses}
       />
     </section>
   );

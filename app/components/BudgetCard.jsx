@@ -1,7 +1,14 @@
 import React from "react";
 import { currencyFormatter } from "../utils";
 
-const BudgetCard = ({ name, amount, max, handleOpenClose, hideButtons }) => {
+const BudgetCard = ({
+  name,
+  amount,
+  max,
+  handleAddOpenClose,
+  hideButtons,
+  handleViewOpenClose,
+}) => {
   const bgColor = [];
   if (amount / max > 0.75) {
     bgColor.push("bg-red-500", "bg-opacity-75");
@@ -52,12 +59,15 @@ const BudgetCard = ({ name, amount, max, handleOpenClose, hideButtons }) => {
         <div className="flex gap-2 justify-end">
           <button
             className="bg-transparent hover:bg-gray-200 hover:bg-opacity-15 text-gray-200 font-semibold hover:text-white py-2.5 px-5 me-2 mb-2 text-sm border border-gray-200 rounded"
-            onClick={handleOpenClose}
+            onClick={handleAddOpenClose}
           >
             Add Expense
           </button>
 
-          <button className="bg-transparent hover:bg-gray-200 hover:bg-opacity-15 text-gray-200 font-semibold hover:text-white py-2.5 px-5 me-2 mb-2 text-sm border border-gray-200 rounded">
+          <button
+            className="bg-transparent hover:bg-gray-200 hover:bg-opacity-15 text-gray-200 font-semibold hover:text-white py-2.5 px-5 me-2 mb-2 text-sm border border-gray-200 rounded"
+            onClick={handleViewOpenClose}
+          >
             View Expenses
           </button>
         </div>

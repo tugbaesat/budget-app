@@ -22,7 +22,7 @@ const Main = ({
 }) => {
   const { budgets, getBudgetExpenses } = useBudgets();
   return (
-    <section className="flex flex-col gap-6">
+    <section className="flex flex-col md:grid md:grid-cols-2 md: px-6 lg:grid-cols-3 gap-6">
       {" "}
       {budgets.map((budget) => {
         const amount = getBudgetExpenses(budget.id).reduce(

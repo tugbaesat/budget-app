@@ -46,6 +46,23 @@ export const BudgetsProvider = ({ children }) => {
       return prevExpense.filter((expense) => expense.id !== id);
     });
   }
+  function editBudget({ id, name, max }) {
+    setBudgets((prevBudgets) => {
+      return prevBudgets.map((budget) => {
+        if (budget.id !== id) return budget;
+        return { ...budget, name, max };
+      });
+    });
+  }
+
+  function editExpense({ id, description, amount }) {
+    setExpenses((prevExpenses) => {
+      return prevExpenses.map((expense) => {
+        if (expense.id !== id) return expense;
+        return { ...expense, description, amount };
+      });
+    });
+  }
   return (
     <BudgetContext.Provider
       value={{
@@ -56,6 +73,8 @@ export const BudgetsProvider = ({ children }) => {
         addExpense,
         deleteBudget,
         deleteExpense,
+        editBudget,
+        editExpense,
       }}
     >
       {children}

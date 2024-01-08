@@ -8,6 +8,7 @@ import {
   useBudgets,
 } from "../contexts/BudgetContexts";
 import { currencyFormatter } from "../utils";
+import Image from "next/image";
 
 const style = {
   position: "absolute",
@@ -25,10 +26,10 @@ export default function ViewExpensesModal({ open, budgetId, handleOpenClose }) {
   const {
     budgets,
     getBudgetExpenses,
-    addBudget,
-    addExpense,
     deleteBudget,
     deleteExpense,
+    editBudget,
+    editExpense,
   } = useBudgets();
   const expenses = getBudgetExpenses(budgetId);
 
@@ -53,19 +54,33 @@ export default function ViewExpensesModal({ open, budgetId, handleOpenClose }) {
             id="modal-modal-title"
             variant="h6"
             component="h2"
-            className="text-black flex gap-4 items-center justify-between"
+            className="text-black flex  gap-4 items-center justify-evenly"
           >
-            <span className="text-sm">{budget?.name} Expenses</span>
+            <span className="text-sm">{budget?.name}</span>
+            <span className="text-sm">
+              {currencyFormatter.format(budget?.max)}
+            </span>
             {budgetId !== UNCATEGORIZED_BUDGET_ID && (
-              <button
-                className="bg-red-500 hover:bg-red-700 text-white p-2  rounded focus:outline-none focus:shadow-outline text-sm"
-                onClick={() => {
-                  deleteBudget({ id: budgetId });
-                  handleOpenClose();
-                }}
-              >
-                Delete
-              </button>
+              <div className="flex gap-2">
+                <button
+                  className="bg-blue-500 hover:bg-blue-700 text-white p-2  rounded focus:outline-none focus:shadow-outline text-sm"
+                  onClick={() => {
+                    editBudget({ id: budgetId });
+                  }}
+                >
+                  Edit
+                  {/* <Image src={edit} /> */}
+                </button>
+                <button
+                  className="bg-red-500 hover:bg-red-700 text-white p-2  rounded focus:outline-none focus:shadow-outline text-sm"
+                  onClick={() => {
+                    deleteBudget({ id: budgetId });
+                    handleOpenClose();
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
             )}
           </Typography>
           {expenses.map((expense) => (
@@ -76,6 +91,14 @@ export default function ViewExpensesModal({ open, budgetId, handleOpenClose }) {
               <p>{expense.description}</p>
               <div className="flex gap-2 items-center">
                 <p>{currencyFormatter.format(expense.amount)}</p>
+                <button
+                  className="bg-transparent border border-blue-500 hover:bg-blue-500 hover:text-white text-blue-500 rounded p-2 focus:outline-none focus:shadow-outline"
+                  onClick={() => {
+                    editExpense(expense);
+                  }}
+                >
+                  Edit
+                </button>
                 <button
                   className="bg-transparent border border-red-500 hover:bg-red-500 hover:text-white text-red-500 rounded p-2 focus:outline-none focus:shadow-outline"
                   onClick={() => {
